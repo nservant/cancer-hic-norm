@@ -5,7 +5,8 @@ The project contains the scripts used in the manuscript : "Effective normalizati
 
 All results and data used in the publication are available at http://members.cbio.mines-paristech.fr/~nvaroquaux/normalization/
 
-The sources are organized as follow :
-*simulation
-*LOIC normalization
-*CAIC normalization
+The sources are organized as follow :  
+- simulation  
+- LOIC normalization  
+- CAIC normalization  
+
