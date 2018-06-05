@@ -40,8 +40,8 @@ function run_simulation
     local outfile=${4}/$(basename $1 | sed -e 's/mat\(rix\)*//')_$(basename $3 | sed -e 's/.bed//').matrix
     
     ## Run simulation
-    echo "Simulate CNVs from ${cnvbed} file ..."
-    cmd="${R_PATH}/R --no-save --no-restore CMD BATCH \"--args input='$1' xgi='$2' cnv='${3}' output_prefix='${outfile}'\" simulateCNV.R simulateCNV.Rout"
+    echo "Simulate CNVs from ${3} file ..."
+    cmd="${R_PATH} --no-save --no-restore CMD BATCH \"--args input='$1' xgi='$2' cnv='${3}' output_prefix='${outfile}'\" simulateCNV.R simulateCNV_${4}.Rout"
     echo $cmd
     eval $cmd
 }

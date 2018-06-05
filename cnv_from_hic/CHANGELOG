@@ -1,0 +1,32 @@
+## 06-05-18
+
+> segment_hic_data.sh 
+l20 : while getopts ":i:b:c:o:h" opt; do 
+	--> 	while getopts ":i:b:s:o:h" opt; do
+l37 : cmd="${R_PATH}/R --no-save --no-restore CMD BATCH \"--arg 
+	-->   	cmd="${R_PATH} --no-save --no-restore CMD BATCH \"--args 
+l44-45 :  local prefix=$(basename(${INPUT_MATRIX}) | sed -e 's/.RData//')
+    ${R_PATH}/R --no-save --no-restore CMD BATCH "--args input.annot='$1' output_prefix='$prefix' glad.stringency='$2'"  segment_simulated_data.R segment_simulated_data.Rout
+	-->     cmd="${R_PATH} --no-save --no-restore CMD BATCH \"--args input='$1' odir='$3' glad.stringency='$2'\"   segment_hic_data_sym.R segment_hic_data_sym_$3.Rout"
+    		echo $cmd
+    		eval $cmd   
+l60 : inannot=$(basename(${INPUT_MATRIX}) | sed -e 's/.mat\(rix\)*/ 
+	-->  	inannot=${OUT_PATH}/$(basename ${INPUT_MATRIX} | sed -e 's/.m
+l65 : segment ${inannot} ${BKP_STRINGENCY} && echo "Segmentation run with success ..."
+	--> 	segment ${inannot} ${BKP_STRINGENCY} ${OUT_PATH} && echo "Segmentation run with success ..."
+
+> segment_hic_data.R
+l32 : chrs <- c("chr1", "chr2", "chr3", "chr4")
+	--> 	nothing
+l49 -> l33 : 
+	--> 	load(file=input)
+		d.annot <- forcePairwise(d.annot)
+l38 : chrs.all <- paste0("chr", c(1:22,"X"))
+	-->	chrs.all <- seqlevels(d.annot)
+l56 :
+	-->	output_prefix <- file.path(odir, gsub(".RData", "", basename(input)))
+
+> annotate_hicdata.R
+l44 : d <- forcePairwise(forceSymmetric(d))
+	-->	d <- forceSymmetric(d)
+
