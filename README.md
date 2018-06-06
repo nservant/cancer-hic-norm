@@ -14,7 +14,9 @@ Contains the script to simulation cancer Hi-C data from diploid real Hi-C data
 
 Contains the script to infer the CNV profile from any Hi-C dataset
 
-- LOIC_normalization  
-- CAIC_normalization  
+- CNV_norm
+
+Scripts to apply the LOIC and CAIC normalization.  
+Note that both methods are now included in the [iced](https://pypi.org/project/iced/#files) python package (>0.5.0).
 
 In case of question, please contact ; nicolas.servant@curie.fr, nelle.varoquaux@gmail.com
