@@ -17,7 +17,7 @@ function usage
 }
 
 ## Get options
-while getopts ":i:b:c:o:h" opt; do
+while getopts ":i:b:s:o:h" opt; do
     case $opt in
 	i) INPUT_MATRIX=$OPTARG ;;
 	b) INPUT_BED=$OPTARG ;;
