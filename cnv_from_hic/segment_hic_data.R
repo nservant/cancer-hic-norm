@@ -18,8 +18,8 @@ require(Matrix)
 options(mc.cores=6)
 source("lib_cnv_hic.R")
 
-##output_prefix
-##input.annot
+##odir
+##input
 ##glad.stringency = normal/low/high
 
 args <- commandArgs(TRUE)
@@ -29,13 +29,15 @@ if (la > 0){
           eval(parse(text=args[[i]]))
   }
 
-chrs <- c("chr1", "chr2", "chr3", "chr4")
 
-## Get chromosome size
+load(file=input)
+d.annot <- forcePairwise(d.annot)
+
+## Get chromosome size 
 genomePack <- "BSgenome.Hsapiens.UCSC.hg19"
 stopifnot(require(genomePack, character.only=TRUE))
 genome <- eval(as.name(genomePack))
-chrs.all <- paste0("chr", c(1:22,"X"))##seqlevels(d)
+chrs.all <- seqlevels(d.annot)
 chrlen <- seqlengths(genome)[chrs.all]
 chrstart <- c(1, cumsum(as.numeric(chrlen))[-length(chrlen)]+1)
 names(chrstart) <- names(chrlen)
@@ -46,9 +48,11 @@ names(chrstart) <- names(chrlen)
 ##
 ######
 
-load(file=input.annot)
+
 gr <-  HiTC:::getCombinedIntervals(d.annot, merge=TRUE)
 xpos <- start(gr) + as.vector(Rle(values=chrstart, lengths=runLength(seqnames(gr))))
+
+output_prefix <- file.path(odir, gsub(".RData", "", basename(input)))
 
 ## Correct for GC/map/len
 rs.corrected <- correctFromHiCBias(d.annot, model="poisson")
@@ -67,7 +71,8 @@ rs.seg <- smoothGLAD(rs.seg, bkp.stringency = glad.stringency)
 ## plots
 rs.seg.gr <- unlist(rs.seg)
 xpos <- start(rs.seg.gr) + as.vector(Rle(values=chrstart, lengths=runLength(seqnames(rs.seg.gr))))
-dat <- data.frame(chr=as.vector(seqnames(rs.seg.gr)), pos = xpos, counts.cor = rs.seg.gr$counts.cor, smt = rs.seg.gr$smt, cn=rs.seg.gr$cnv)
+dat <- data.frame(chr=as.vector(seqnames(rs.seg.gr)), pos = xpos, counts.cor = rs.seg.gr$counts.cor, smt = rs.seg.gr$smt)
+#, cn=rs.seg.gr$cnv)
 
 p2 <- ggplot(dat) + geom_point(aes(x=pos, y=counts.cor), col="gray25", size=3) +
   geom_line(aes(x=pos, y=smt), col="red", size=2) +

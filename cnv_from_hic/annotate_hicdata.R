@@ -41,7 +41,8 @@ require(gridExtra)
 
 ## Load data
 d <- importC(input, xgi, ygi=xgi)
-d <- forcePairwise(forceSymmetric(d))
+d <- forceSymmetric(d)
+## Expect to have half of trans + cis
 
 ##################################
 ##

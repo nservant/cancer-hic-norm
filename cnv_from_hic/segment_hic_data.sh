@@ -34,15 +34,16 @@ done
 
 function annotate
 {
-    cmd="${R_PATH}/R --no-save --no-restore CMD BATCH \"--args input='$1' xgi='$2' odir='$3'\" annotate_hicdata.R annotate_hicdata.Rout"
+    cmd="${R_PATH} --no-save --no-restore CMD BATCH \"--args input='$1' xgi='$2' odir='$3'\" annotate_hicdata_sym.R annotate_hicdata_sym_$3.Rout"
     echo $cmd
     eval $cmd
 }
 
 function segment
 {
-    local prefix=$(basename(${INPUT_MATRIX}) | sed -e 's/.RData//')
-    ${R_PATH}/R --no-save --no-restore CMD BATCH "--args input.annot='$1' output_prefix='$prefix' glad.stringency='$2'"  segment_simulated_data.R segment_simulated_data.Rout
+    cmd="${R_PATH} --no-save --no-restore CMD BATCH \"--args input='$1' odir='$3' glad.stringency='$2'\"   segment_hic_data_sym.R segment_hic_data_sym_$3.Rout"
+    echo $cmd
+    eval $cmd   
 }
 
 
@@ -57,11 +58,11 @@ fi
 
 annotate ${INPUT_MATRIX} ${INPUT_BED} ${OUT_PATH}
 
-inannot=$(basename(${INPUT_MATRIX}) | sed -e 's/.mat\(rix\)*/.RData/')
+inannot=${OUT_PATH}/$(basename ${INPUT_MATRIX} | sed -e 's/.mat\(rix\)*/.RData/')
 if [ ! -e $inannot ]; then
     echo -e "Annotated file not found. Exit."
 fi
 
-segment ${inannot} ${BKP_STRINGENCY} && echo "Segmentation run with success ..."
+segment ${inannot} ${BKP_STRINGENCY} ${OUT_PATH} && echo "Segmentation run with success ..."
 
 exit 0
