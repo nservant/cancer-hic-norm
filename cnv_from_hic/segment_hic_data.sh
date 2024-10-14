@@ -34,14 +34,14 @@ done
 
 function annotate
 {
-    cmd="${R_PATH} --no-save --no-restore CMD BATCH \"--args input='$1' xgi='$2' odir='$3'\" annotate_hicdata_sym.R annotate_hicdata_sym_$3.Rout"
+    cmd="${R_PATH} --no-save --no-restore CMD BATCH \"--args input='$1' xgi='$2' odir='$3'\" annotate_hicdata.R annotate_hicdata_$3.Rout"
     echo $cmd
     eval $cmd
 }
 
 function segment
 {
-    cmd="${R_PATH} --no-save --no-restore CMD BATCH \"--args input='$1' odir='$3' glad.stringency='$2'\"   segment_hic_data_sym.R segment_hic_data_sym_$3.Rout"
+    cmd="${R_PATH} --no-save --no-restore CMD BATCH \"--args input='$1' odir='$3' glad.stringency='$2'\"   segment_hic_data.R segment_hic_data_$3.Rout"
     echo $cmd
     eval $cmd   
 }
